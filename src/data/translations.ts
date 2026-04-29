@@ -16,6 +16,11 @@ export const translations: Record<string, Record<string, Record<string, string>>
       logout: 'Log Out',
       login: 'Log In',
       signup: 'Sign Up',
+      myFiles: 'My Files',
+    },
+    auth: {
+      loginSubtitle: 'Sign in to continue learning',
+      signupSubtitle: 'Join CodeSphere and start your journey',
     },
     home: {
       title: 'Master Digital Skills & Build Your Career',
@@ -37,6 +42,10 @@ export const translations: Record<string, Record<string, Record<string, string>>
     },
     dashboard: {
       welcome: 'Welcome back',
+      welcomeBack: 'Welcome back',
+      welcomeNew: 'Welcome',
+      keepGoing: 'Keep up the great work on your learning journey!',
+      startJourney: 'Start your coding journey today — all courses are free!',
       continueLearn: 'Continue Learning',
       yourProgress: 'Your Progress',
       recentActivity: 'Recent Activity',
@@ -47,6 +56,16 @@ export const translations: Record<string, Record<string, Record<string, string>>
       completed: 'Completed',
       noEnrollments: "You haven't enrolled in any courses yet.",
       browseCourses: 'Browse Courses',
+    },
+    myFiles: {
+      title: 'My Files',
+      savedVideos: 'Saved Videos',
+      noFiles: 'No saved files yet. Save videos from lessons to access them offline.',
+      remove: 'Remove',
+      openVideo: 'Open Video',
+      savedOn: 'Saved on',
+      shareFile: 'Share',
+      exportAll: 'Export All',
     },
     courses: {
       title: 'All Courses',
@@ -76,6 +95,9 @@ export const translations: Record<string, Record<string, Record<string, string>>
       runCode: 'Run Code',
       resetCode: 'Reset',
       downloadVideo: 'Download Video',
+      saveToFiles: 'Save to My Files',
+      savedToFiles: 'Saved!',
+      watchVideo: 'Watch Video',
     },
     editor: {
       title: 'Code Editor',
@@ -173,6 +195,11 @@ export const translations: Record<string, Record<string, Record<string, string>>
       logout: 'تسجيل الخروج',
       login: 'تسجيل الدخول',
       signup: 'إنشاء حساب',
+      myFiles: 'ملفاتي',
+    },
+    auth: {
+      loginSubtitle: 'سجّل دخولك لمتابعة التعلم',
+      signupSubtitle: 'انضم إلى CodeSphere وابدأ رحلتك',
     },
     home: {
       title: 'أتقن المهارات الرقمية وابنِ مسيرتك المهنية',
@@ -194,6 +221,10 @@ export const translations: Record<string, Record<string, Record<string, string>>
     },
     dashboard: {
       welcome: 'مرحباً بعودتك',
+      welcomeBack: 'مرحباً بعودتك',
+      welcomeNew: 'مرحباً بك',
+      keepGoing: 'واصل عملك الرائع في رحلة التعلم!',
+      startJourney: 'ابدأ رحلتك البرمجية اليوم — كل الدورات مجانية!',
       continueLearn: 'أكمل التعلم',
       yourProgress: 'تقدمك',
       recentActivity: 'النشاط الأخير',
@@ -204,6 +235,16 @@ export const translations: Record<string, Record<string, Record<string, string>>
       completed: 'مكتمل',
       noEnrollments: 'لم تسجل في أي دورة بعد.',
       browseCourses: 'تصفح الدورات',
+    },
+    myFiles: {
+      title: 'ملفاتي',
+      savedVideos: 'الفيديوهات المحفوظة',
+      noFiles: 'لا توجد ملفات محفوظة بعد. احفظ فيديوهات من الدروس للوصول إليها.',
+      remove: 'إزالة',
+      openVideo: 'فتح الفيديو',
+      savedOn: 'تم الحفظ في',
+      shareFile: 'مشاركة',
+      exportAll: 'تصدير الكل',
     },
     courses: {
       title: 'جميع الدورات',
@@ -233,6 +274,9 @@ export const translations: Record<string, Record<string, Record<string, string>>
       runCode: 'تشغيل الكود',
       resetCode: 'إعادة تعيين',
       downloadVideo: 'تحميل الفيديو',
+      saveToFiles: 'حفظ في ملفاتي',
+      savedToFiles: 'تم الحفظ!',
+      watchVideo: 'مشاهدة الفيديو',
     },
     editor: {
       title: 'محرر الأكواد',
@@ -330,6 +374,11 @@ export const translations: Record<string, Record<string, Record<string, string>>
       logout: 'Abmelden',
       login: 'Anmelden',
       signup: 'Registrieren',
+      myFiles: 'Meine Dateien',
+    },
+    auth: {
+      loginSubtitle: 'Melde dich an, um weiterzulernen',
+      signupSubtitle: 'Werde Teil von CodeSphere und starte deine Reise',
     },
     home: {
       title: 'Digitale Fähigkeiten meistern & Karriere aufbauen',
@@ -351,6 +400,10 @@ export const translations: Record<string, Record<string, Record<string, string>>
     },
     dashboard: {
       welcome: 'Willkommen zurück',
+      welcomeBack: 'Willkommen zurück',
+      welcomeNew: 'Willkommen',
+      keepGoing: 'Mach weiter so auf deiner Lernreise!',
+      startJourney: 'Starte heute deine Coding-Reise — alle Kurse sind kostenlos!',
       continueLearn: 'Weiterlernen',
       yourProgress: 'Dein Fortschritt',
       recentActivity: 'Letzte Aktivität',
@@ -361,6 +414,16 @@ export const translations: Record<string, Record<string, Record<string, string>>
       completed: 'Abgeschlossen',
       noEnrollments: 'Du bist noch in keinem Kurs eingeschrieben.',
       browseCourses: 'Kurse durchsuchen',
+    },
+    myFiles: {
+      title: 'Meine Dateien',
+      savedVideos: 'Gespeicherte Videos',
+      noFiles: 'Noch keine gespeicherten Dateien. Speichere Videos aus Lektionen.',
+      remove: 'Entfernen',
+      openVideo: 'Video öffnen',
+      savedOn: 'Gespeichert am',
+      shareFile: 'Teilen',
+      exportAll: 'Alle exportieren',
     },
     courses: {
       title: 'Alle Kurse',
@@ -390,6 +453,9 @@ export const translations: Record<string, Record<string, Record<string, string>>
       runCode: 'Code ausführen',
       resetCode: 'Zurücksetzen',
       downloadVideo: 'Video herunterladen',
+      saveToFiles: 'In Meine Dateien speichern',
+      savedToFiles: 'Gespeichert!',
+      watchVideo: 'Video ansehen',
     },
     editor: {
       title: 'Code-Editor',

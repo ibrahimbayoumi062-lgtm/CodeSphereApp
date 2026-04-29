@@ -33,10 +33,10 @@ export function DashboardScreen({ navigation }: any) {
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: 16, paddingBottom: 100 }}>
       {/* Welcome */}
       <Text style={{ fontSize: 24, fontWeight: '700', color: colors.text }}>
-        {t('dashboard.welcome')}, {user?.name || 'Learner'} 👋
+        {(user?.xp || 0) > 0 ? t('dashboard.welcomeBack') : t('dashboard.welcomeNew')}, {user?.name || 'Learner'} 👋
       </Text>
       <Text style={{ fontSize: 14, color: colors.textSecondary, marginTop: 4 }}>
-        Keep up the great work on your learning journey!
+        {(user?.xp || 0) > 0 ? t('dashboard.keepGoing') : t('dashboard.startJourney')}
       </Text>
 
       {/* Stats Grid */}

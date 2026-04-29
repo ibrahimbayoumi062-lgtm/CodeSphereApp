@@ -5,6 +5,7 @@ import { Card, CardContent } from '../../components/ui/Card';
 import { Ionicons } from '@expo/vector-icons';
 
 const menuItems = [
+  { screen: 'MyFiles', icon: 'folder-open' as const, labelKey: 'myFiles.savedVideos', color: '#6366F1' },
   { screen: 'Community', icon: 'people' as const, labelKey: 'nav.community', color: '#3B82F6' },
   { screen: 'Roadmaps', icon: 'map' as const, labelKey: 'nav.roadmaps', color: '#8B5CF6' },
   { screen: 'Leaderboard', icon: 'trophy' as const, labelKey: 'nav.leaderboard', color: '#F97316' },
@@ -48,6 +49,8 @@ export function MoreScreen({ navigation }: any) {
             key={item.screen}
             onPress={() => navigation.navigate(item.screen)}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={t(item.labelKey)}
           >
             <Card>
               <CardContent style={{ flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14 }}>

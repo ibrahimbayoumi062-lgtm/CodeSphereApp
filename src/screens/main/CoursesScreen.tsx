@@ -69,6 +69,8 @@ export function CoursesScreen({ navigation }: any) {
               key={course.id}
               onPress={() => navigation.navigate('CourseDetail', { courseId: course.slug })}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel={`${getLocalized(course.title, course.titleAr, course.titleDe)} - ${t(`courses.${course.difficulty}`)}`}
             >
               <Card>
                 <LinearGradient

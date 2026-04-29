@@ -25,6 +25,7 @@ import { CertificatesScreen } from '../screens/main/CertificatesScreen';
 import { ProfileScreen } from '../screens/main/ProfileScreen';
 import { SettingsScreen } from '../screens/main/SettingsScreen';
 import { MoreScreen } from '../screens/main/MoreScreen';
+import { MyFilesScreen } from '../screens/main/MyFilesScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,7 @@ function MoreStackNavigator() {
       <MoreStack.Screen name="Certificates" component={CertificatesScreen} />
       <MoreStack.Screen name="Profile" component={ProfileScreen} />
       <MoreStack.Screen name="Settings" component={SettingsScreen} />
+      <MoreStack.Screen name="MyFiles" component={MyFilesScreen} />
     </MoreStack.Navigator>
   );
 }
