@@ -36,7 +36,7 @@ export function CourseDetailScreen({ route, navigation }: any) {
         end={{ x: 1, y: 0 }}
         style={{ padding: 24, paddingTop: 60 }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 16 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 16 }} accessibilityRole="button" accessibilityLabel={t('common.back')}>
           <Ionicons name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <View style={{
@@ -85,6 +85,8 @@ export function CourseDetailScreen({ route, navigation }: any) {
               <TouchableOpacity
                 key={lesson.id}
                 onPress={() => navigation.navigate('Lesson', { courseId: course.slug, lessonId: lesson.id })}
+                accessibilityRole="button"
+                accessibilityLabel={`Lesson ${idx + 1}: ${getLocalized(lesson.title, lesson.titleAr, lesson.titleDe)}`}
                 style={{
                   flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16,
                   borderBottomWidth: idx < lessons.length - 1 ? 1 : 0, borderBottomColor: colors.border,

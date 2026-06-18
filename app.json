@@ -21,12 +21,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#2563EB"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
       "package": "com.codesphere.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7f75e174-8ce3-465a-82ae-beaab817cc2f"
+      }
+    },
+    "owner": "ibrahim_bayoumi"
   }
 }

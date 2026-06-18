@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert, Linking } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { useApp } from '../../hooks/AppContext';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { coursesData } from '../../data/courses';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function LessonScreen({ route, navigation }: any) {
   const { courseId, lessonId } = route.params;
@@ -14,6 +16,7 @@ export function LessonScreen({ route, navigation }: any) {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [quizResults, setQuizResults] = useState<Record<string, boolean | null>>({});
   const [taskCode, setTaskCode] = useState<Record<string, string>>({});
+  const [savedToFiles, setSavedToFiles] = useState(false);
 
   const course = coursesData.find((c) => c.slug === courseId);
   const lesson = course?.lessons?.find((l) => l.id === lessonId);
@@ -30,6 +33,45 @@ export function LessonScreen({ route, navigation }: any) {
   const nextLesson = course?.lessons?.[lessonIdx + 1];
   const prevLesson = lessonIdx > 0 ? course?.lessons?.[lessonIdx - 1] : null;
 
+  const handleSaveToFiles = async () => {
+    try {
+      const saved = await AsyncStorage.getItem('codesphere-my-files');
+      const files: any[] = saved ? JSON.parse(saved) : [];
+      const alreadySaved = files.some((f: any) => f.lessonId === lesson.id);
+      if (alreadySaved) {
+        Alert.alert(t('lesson.savedToFiles'), 'This lesson is already in your files.');
+        setSavedToFiles(true);
+        return;
+      }
+      files.push({
+        lessonId: lesson.id,
+        courseId: course?.id,
+        courseSlug: course?.slug,
+        title: lesson.title,
+        titleAr: lesson.titleAr,
+        titleDe: lesson.titleDe,
+        courseTitle: course?.title || '',
+        courseTitleAr: course?.titleAr || '',
+        courseTitleDe: course?.titleDe || '',
+        videoUrl: lesson.videoUrl,
+        duration: lesson.duration,
+        savedAt: new Date().toISOString(),
+      });
+      await AsyncStorage.setItem('codesphere-my-files', JSON.stringify(files));
+      setSavedToFiles(true);
+      Alert.alert(t('lesson.savedToFiles'), 'Video saved to My Files!');
+    } catch {
+      Alert.alert(t('common.error'), 'Failed to save.');
+    }
+  };
+
+  const handleOpenVideo = () => {
+    if (lesson.videoUrl) {
+      const watchUrl = lesson.videoUrl.replace('/embed/', '/watch?v=');
+      Linking.openURL(watchUrl);
+    }
+  };
+
   const renderContent = (content: string) => {
     const lines = content.split('\n');
     const elements: React.ReactNode[] = [];
@@ -43,7 +85,11 @@ export function LessonScreen({ route, navigation }: any) {
             <View key={`code-${idx}`} style={{
               backgroundColor: '#1F2937', borderRadius: 12, padding: 14, marginVertical: 8,
             }}>
-              <Text style={{ fontFamily: 'monospace', fontSize: 13, color: '#E5E7EB' }}>{codeBuf.trim()}</Text>
+              <Text
+                style={{ fontFamily: 'monospace', fontSize: 13, color: '#E5E7EB' }}
+                accessibilityRole="text"
+                accessibilityLabel="Code example"
+              >{codeBuf.trim()}</Text>
             </View>
           );
           codeBuf = '';
@@ -55,9 +101,9 @@ export function LessonScreen({ route, navigation }: any) {
       }
       if (inCode) { codeBuf += line + '\n'; return; }
       if (line.startsWith('# ')) {
-        elements.push(<Text key={idx} style={{ fontSize: 22, fontWeight: '700', color: colors.text, marginTop: 16, marginBottom: 8 }}>{line.slice(2)}</Text>);
+        elements.push(<Text key={idx} accessibilityRole="header" style={{ fontSize: 22, fontWeight: '700', color: colors.text, marginTop: 16, marginBottom: 8 }}>{line.slice(2)}</Text>);
       } else if (line.startsWith('## ')) {
-        elements.push(<Text key={idx} style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginTop: 14, marginBottom: 6 }}>{line.slice(3)}</Text>);
+        elements.push(<Text key={idx} accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginTop: 14, marginBottom: 6 }}>{line.slice(3)}</Text>);
       } else if (line.startsWith('- ')) {
         elements.push(
           <View key={idx} style={{ flexDirection: 'row', gap: 8, marginLeft: 8, marginBottom: 4 }}>
@@ -76,16 +122,76 @@ export function LessonScreen({ route, navigation }: any) {
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingBottom: 100 }}>
       {/* Header */}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, paddingTop: 50 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
+        >
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text }}>
+          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text }} accessibilityRole="header">
             {getLocalized(lesson.title, lesson.titleAr, lesson.titleDe)}
           </Text>
           <Text style={{ fontSize: 12, color: colors.textSecondary }}>{lesson.duration} {t('courses.minutes')} • {lesson.xpReward} XP</Text>
         </View>
       </View>
+
+      {/* Video Player */}
+      {lesson.videoUrl && (
+        <View style={{ paddingHorizontal: 16 }}>
+          <View style={{
+            borderRadius: 16, overflow: 'hidden', height: 210,
+            backgroundColor: '#000', marginBottom: 8,
+          }}>
+            <WebView
+              source={{ uri: lesson.videoUrl }}
+              style={{ flex: 1 }}
+              allowsFullscreenVideo
+              javaScriptEnabled
+              mediaPlaybackRequiresUserAction={false}
+              accessibilityLabel={`${t('lesson.watchVideo')}: ${lesson.title}`}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', gap: 8, marginBottom: 16 }}>
+            <TouchableOpacity
+              onPress={handleOpenVideo}
+              accessibilityRole="button"
+              accessibilityLabel={t('lesson.downloadVideo')}
+              style={{
+                flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+                gap: 6, paddingVertical: 10, borderRadius: 10,
+                backgroundColor: colors.primaryLight,
+              }}
+            >
+              <Ionicons name="open-outline" size={16} color={colors.primary} />
+              <Text style={{ fontSize: 13, fontWeight: '600', color: colors.primary }}>
+                {t('lesson.downloadVideo')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSaveToFiles}
+              accessibilityRole="button"
+              accessibilityLabel={savedToFiles ? t('lesson.savedToFiles') : t('lesson.saveToFiles')}
+              style={{
+                flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+                gap: 6, paddingVertical: 10, borderRadius: 10,
+                backgroundColor: savedToFiles ? colors.greenLight : colors.card,
+                borderWidth: 1, borderColor: savedToFiles ? colors.green : colors.border,
+              }}
+            >
+              <Ionicons
+                name={savedToFiles ? 'checkmark-circle' : 'bookmark-outline'}
+                size={16}
+                color={savedToFiles ? colors.green : colors.text}
+              />
+              <Text style={{ fontSize: 13, fontWeight: '600', color: savedToFiles ? colors.green : colors.text }}>
+                {savedToFiles ? t('lesson.savedToFiles') : t('lesson.saveToFiles')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       {/* Content */}
       <View style={{ padding: 16 }}>
@@ -95,7 +201,7 @@ export function LessonScreen({ route, navigation }: any) {
       {/* Quizzes */}
       {lesson.quizzes.length > 0 && (
         <View style={{ padding: 16 }}>
-          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginBottom: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginBottom: 12 }} accessibilityRole="header">
             {t('lesson.quiz')}
           </Text>
           {lesson.quizzes.map((quiz) => {
@@ -111,6 +217,9 @@ export function LessonScreen({ route, navigation }: any) {
                     <TouchableOpacity
                       key={idx}
                       onPress={() => setQuizAnswers({ ...quizAnswers, [quiz.id]: idx })}
+                      accessibilityRole="radio"
+                      accessibilityState={{ selected: quizAnswers[quiz.id] === idx }}
+                      accessibilityLabel={opt}
                       style={{
                         flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12,
                         borderRadius: 10, marginBottom: 8,
@@ -163,14 +272,18 @@ export function LessonScreen({ route, navigation }: any) {
       {/* Tasks */}
       {lesson.tasks.length > 0 && (
         <View style={{ padding: 16 }}>
-          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginBottom: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: '700', color: colors.text, marginBottom: 12 }} accessibilityRole="header">
             {t('lesson.task')}
           </Text>
           {lesson.tasks.map((task) => (
             <Card key={task.id}>
               <CardContent>
-                <Text style={{ fontSize: 15, fontWeight: '600', color: colors.text }}>{task.title}</Text>
-                <Text style={{ fontSize: 13, color: colors.textSecondary, marginTop: 4 }}>{task.description}</Text>
+                <Text style={{ fontSize: 15, fontWeight: '600', color: colors.text }}>
+                  {getLocalized(task.title, task.titleAr, task.titleDe)}
+                </Text>
+                <Text style={{ fontSize: 13, color: colors.textSecondary, marginTop: 4 }}>
+                  {getLocalized(task.description, task.descriptionAr, task.descriptionDe)}
+                </Text>
                 <TextInput
                   style={{
                     fontFamily: 'monospace', fontSize: 13, color: '#E5E7EB',
@@ -178,6 +291,7 @@ export function LessonScreen({ route, navigation }: any) {
                     minHeight: 100, textAlignVertical: 'top',
                   }}
                   multiline
+                  accessibilityLabel="Code editor"
                   value={taskCode[task.id] || task.starterCode}
                   onChangeText={(text) => setTaskCode({ ...taskCode, [task.id]: text })}
                 />

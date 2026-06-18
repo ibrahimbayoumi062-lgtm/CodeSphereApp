@@ -55,7 +55,7 @@ export function SignupScreen({ navigation }: any) {
           {t('nav.signup')}
         </Text>
         <Text style={{ fontSize: 14, color: colors.textSecondary, marginTop: 8 }}>
-          Create your CodeSphere account
+          {t('auth.signupSubtitle')}
         </Text>
       </View>
 

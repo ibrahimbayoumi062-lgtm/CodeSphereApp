@@ -54,7 +54,7 @@ export function LoginScreen({ navigation }: any) {
           {t('nav.login')}
         </Text>
         <Text style={{ fontSize: 14, color: colors.textSecondary, marginTop: 8 }}>
-          Welcome back to CodeSphere
+          {t('auth.loginSubtitle')}
         </Text>
       </View>
 
